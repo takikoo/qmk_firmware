@@ -181,7 +181,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* MOV
  * ,-----------------------------------------------------------------------------------.
- * |      |      |      |      |      | PgUp | CIns |      |      |      | SIns |      |
+ * |      |      |      |      |      | PgUp | CIns | CPgU |      | CPgD | SIns |      |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
  * | Bksp | Home | End  | Shift| Ctrl |PgDown| Left | Down |  Up  | Right| Del  |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
@@ -192,12 +192,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *
  * - Y outputs Control + Insert
  * - P outputs Shift + Insert
+ * - U outputs Control + PageUp
+ * - P outputs Control + PageDown
  */
 [_MOV] = LAYOUT_planck_grid(
-				XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , KC_PGUP , C(KC_INS) , XXXXXXX , XXXXXXX , XXXXXXX  , S(KC_INS) , XXXXXXX,
-				KC_BSPC , KC_HOME , KC_END  , KC_LSFT , KC_LCTL , KC_PGDN , KC_LEFT   , KC_DOWN , KC_UP   , KC_RIGHT , KC_DEL    , XXXXXXX,
-				_______ , XXXXXXX , XXXXXXX , KC_CAPS , XXXXXXX , XXXXXXX , XXXXXXX   , XXXXXXX , XXXXXXX , XXXXXXX  , XXXXXXX   , _______,
-				_______ , _______ , _______ , _______ , XXXXXXX , _______ , _______   , KC_ENT  , _______ , _______  , _______   , _______
+				XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , KC_PGUP , C(KC_INS) , C(KC_PGUP) , XXXXXXX , C(KC_PGDN) , S(KC_INS) , XXXXXXX,
+				KC_BSPC , KC_HOME , KC_END  , KC_LSFT , KC_LCTL , KC_PGDN , KC_LEFT   , KC_DOWN    , KC_UP   , KC_RIGHT   , KC_DEL    , XXXXXXX,
+				_______ , XXXXXXX , XXXXXXX , KC_CAPS , XXXXXXX , XXXXXXX , XXXXXXX   , XXXXXXX    , XXXXXXX , XXXXXXX    , XXXXXXX   , _______,
+				_______ , _______ , _______ , _______ , XXXXXXX , _______ , _______   , KC_ENT     , _______ , _______    , _______   , _______
 				),
 
 /* NUM
