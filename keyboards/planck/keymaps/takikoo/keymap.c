@@ -36,8 +36,8 @@ enum planck_keycodes {
 
 #define CTL_ESC CTL_T(KC_ESC)
 
-#define LOWER MO(_LOWER)
-#define RAISE MO(_RAISE)
+#define LOWER LT(_LOWER, KC_BSPC)
+#define RAISE LT(_RAISE, KC_ENT)
 #define SPCMOV LT(_MOV, KC_SPC)
 #define TABNUM LT(_NUM, KC_TAB)
 
