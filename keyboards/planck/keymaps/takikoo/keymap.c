@@ -25,7 +25,7 @@ enum planck_layers {
   _RAISE,
   _ADJUST,
   _MOV,
-	_NUM
+  _NUM
 };
 
 enum planck_keycodes {
@@ -139,11 +139,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * - P outputs Control + PageDown
  */
 [_MOV] = LAYOUT_planck_grid(
-				XXXXXXX , XXXXXXX , C_PGUP  , KC_LALT , C_PGDN  , KC_PGUP , C(KC_INS) , C_PGUP  , XXXXXXX , C_PGDN   , S(KC_INS) , XXXXXXX,
-				KC_BSPC , KC_HOME , KC_END  , KC_LSFT , KC_LCTL , KC_PGDN , KC_LEFT   , KC_DOWN , KC_UP   , KC_RIGHT , KC_DEL    , XXXXXXX,
-				_______ , XXXXXXX , XXXXXXX , KC_CAPS , XXXXXXX , XXXXXXX , XXXXXXX   , XXXXXXX , XXXXXXX , XXXXXXX  , XXXXXXX   , _______,
-				_______ , _______ , _______ , _______ , XXXXXXX , _______ , _______   , KC_ENT  , _______ , _______  , _______   , _______
-				),
+        XXXXXXX , XXXXXXX , C_PGUP  , KC_LALT , C_PGDN  , KC_PGUP , C(KC_INS) , C_PGUP  , XXXXXXX , C_PGDN   , S(KC_INS) , XXXXXXX,
+        KC_BSPC , KC_HOME , KC_END  , KC_LSFT , KC_LCTL , KC_PGDN , KC_LEFT   , KC_DOWN , KC_UP   , KC_RIGHT , KC_DEL    , XXXXXXX,
+        _______ , XXXXXXX , XXXXXXX , KC_CAPS , XXXXXXX , XXXXXXX , XXXXXXX   , XXXXXXX , XXXXXXX , XXXXXXX  , XXXXXXX   , _______,
+        _______ , _______ , _______ , _______ , XXXXXXX , _______ , _______   , KC_ENT  , _______ , _______  , _______   , _______
+        ),
 
 /* NUM
  * ,-----------------------------------------------------------------------------------.
@@ -157,11 +157,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_NUM] = LAYOUT_planck_grid(
-				_______ , KC_F1   , KC_F2   , KC_F3   , KC_F4   , KC_F5   , XXXXXXX , KC_7 , KC_8    , KC_9    , KC_PAST , KC_DEL  ,
-				XXXXXXX , KC_F6   , KC_F7   , KC_F8   , KC_F9   , KC_F10  , KC_BSPC , KC_4 , KC_5    , KC_6    , KC_PPLS , XXXXXXX ,
-				XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , KC_F11  , KC_F12  , KC_ENT  , KC_1 , KC_2    , KC_3    , KC_PMNS , XXXXXXX ,
-				XXXXXXX , XXXXXXX , XXXXXXX , _______ , XXXXXXX , XXXXXXX , _______ , KC_0 , KC_COMM ,KC_DOT   , XXXXXXX , XXXXXXX
-				)
+        _______ , KC_F1   , KC_F2   , KC_F3   , KC_F4   , KC_F5   , XXXXXXX , KC_7 , KC_8    , KC_9    , KC_PAST , KC_DEL  ,
+        XXXXXXX , KC_F6   , KC_F7   , KC_F8   , KC_F9   , KC_F10  , KC_BSPC , KC_4 , KC_5    , KC_6    , KC_PPLS , XXXXXXX ,
+        XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , KC_F11  , KC_F12  , KC_ENT  , KC_1 , KC_2    , KC_3    , KC_PMNS , XXXXXXX ,
+        XXXXXXX , XXXXXXX , XXXXXXX , _______ , XXXXXXX , XXXXXXX , _______ , KC_0 , KC_COMM ,KC_DOT   , XXXXXXX , XXXXXXX
+        )
 
 };
 
