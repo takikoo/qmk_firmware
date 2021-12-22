@@ -241,17 +241,11 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
 bool dip_switch_update_user(uint8_t index, bool active) {
     switch (index) {
         case 0: {
-#ifdef AUDIO_ENABLE
-            static bool play_sound = false;
-#endif
             if (active) {
                 layer_on(_ADJUST);
             } else {
                 layer_off(_ADJUST);
             }
-#ifdef AUDIO_ENABLE
-            play_sound = true;
-#endif
             break;
         }
         case 1:
