@@ -101,22 +101,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 
 /* Adjust (Lower + Raise)
- *                      v------------------------RGB CONTROL--------------------v
  * ,-----------------------------------------------------------------------------------.
- * |      | Reset|Debug | RGB  |RGBMOD| HUE+ | HUE- | SAT+ | SAT- |      |PrtScr|  Del |
+ * | Reset|Qwerty| RGB+ | Bri+ |      |      |      | Vol- | Play | Vol+ | Mute |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |MUSmod|Aud on|Audoff|AGnorm|AGswap|Qwerty|      |      |      |      |
+ * |      |      | RGB- | Bri- | MOUS1| MOUS2| MOUSL| MOUSD| MOUSU| MOUSR|      |PrtScr|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |Voice-|Voice+|Mus on|Musoff|MIDIon|MIDIof|TermOn|TermOf|      |      |      |
+ * |      | RGB  |RGBMOD|AudTog|ClkTog|      |      | ACC0 | ACC1 | ACC2 |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |             |      |      |      |      |      |
+ * |EEP-Rs|      |      |      |******|             |******|      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_ADJUST] = LAYOUT_planck_grid(
-    _______, RESET,   DEBUG,   RGB_TOG, RGB_MOD, RGB_HUI, RGB_HUD, RGB_SAI, RGB_SAD,  _______, KC_PSCR, KC_DEL ,
-    _______, _______, MU_MOD,  AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, QWERTY,  _______,  _______, _______, _______,
-    _______, MUV_DE,  MUV_IN,  MU_ON,   MU_OFF,  MI_ON,   MI_OFF,  TERM_ON, TERM_OFF, _______, _______, _______,
-    _______, _______, _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______
+    RESET,   QWERTY,  RGB_VAI, KC_BRIU, _______, _______, _______, KC_VOLD, KC_MPLY, KC_VOLU, KC_MUTE, _______,
+    _______, _______, RGB_VAD, KC_BRID, KC_BTN1, KC_BTN2, KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, _______, KC_PSCR,
+    _______, RGB_TOG, RGB_MOD, AU_TOG,  CK_TOGG, _______, _______, KC_ACL0, KC_ACL1, KC_ACL2, _______, _______,
+    EEP_RST, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 ),
 
 #define C_PGUP C(KC_PGUP)
