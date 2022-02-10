@@ -16,6 +16,7 @@
 
 #include QMK_KEYBOARD_H
 #include "keymap_swedish.h"
+#include "sendstring_swedish.h"
 
 enum planck_layers {
   _QWERTY,
@@ -75,18 +76,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   -  |Enter |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | Hyper| Meh  | Alt  | GUI  |Lower |  SpaceMove  |Raise | Left | Down |  Up  |Right |
+ * |Leader| Meh  | Alt  | GUI  |Lower |  SpaceMove  |Raise | Left | Down |  Up  |Right |
  * `-----------------------------------------------------------------------------------'
- *  TabNum - Tab when tapped, NUM layer when held
- *  C-Esc - CTRL when held, ESC when tapped
- *  SpaceMove - Space when tapped, MOVE layer when held
  */
 
 [_NEXT] = LAYOUT_planck_grid(
     TABNUM,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    SE_ARNG,
     CTL_ESC, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    SE_ODIA, SE_ADIA,
     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    SE_COMM, SE_DOT,  SE_MINS, KC_ENT ,
-    KC_HYPR, KC_MEH,  KC_LALT, KC_LGUI, BS_LOW,  SPCMOV,  SPCMOV,  ENT_RS,  KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
+    KC_LEAD, KC_MEH,  KC_LALT, KC_LGUI, BS_LOW,  SPCMOV,  SPCMOV,  ENT_RS,  KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
 ),
 
 /* GAME
@@ -97,7 +95,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   -  |Enter |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |  Tab |   4  |   3  |   2  |Raise |    Space    |Lower | Left | Down |  Up  |Right |
+ * | Alt  |   4  |   3  |   2  |Raise |    Space    |Lower | Left | Down |  Up  |Right |
  * `-----------------------------------------------------------------------------------'
  *  C-Esc - CTRL when held, ESC when tapped
  *  Lower and Raise are flipped
@@ -106,7 +104,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_1,     KC_Q,  KC_W,  KC_E,  KC_R,   KC_T,    KC_Y,    KC_U,   KC_I,     KC_O,     KC_P,     KC_BSPC,
     CTL_ESC,  KC_A,  KC_S,  KC_D,  KC_F,   KC_G,    KC_H,    KC_J,   KC_K,     KC_L,     SE_ODIA,  SE_ADIA,
     KC_LSFT,  KC_Z,  KC_X,  KC_C,  KC_V,   KC_B,    KC_N,    KC_M,   SE_COMM,  SE_DOT,   SE_MINS,  KC_ENT ,
-    KC_TAB,   KC_4,  KC_3,  KC_2,  RAISE,  KC_SPC,  KC_SPC,  LOWER,  KC_LEFT,  KC_DOWN,  KC_UP,    KC_RGHT
+    KC_LALT,  KC_4,  KC_3,  KC_2,  RAISE,  KC_SPC,  KC_SPC,  LOWER,  KC_LEFT,  KC_DOWN,  KC_UP,    KC_RGHT
 ),
 
 /* Lower
@@ -151,7 +149,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      | RGB- | Bri- | MOUS1| MOUS2| MOUSL| MOUSD| MOUSU| MOUSR|      |PrtScr|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      | RGB  |RGBMOD|AudTog|ClkTog|      |      | ACC0 | ACC1 | ACC2 |      |      |
+ * |      | RGB  |RGBMOD|AudTog|      |      |      | ACC0 | ACC1 | ACC2 |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |EEP-Rs|      |      |      |******|             |******|      |      |      |      |
  * `-----------------------------------------------------------------------------------'
@@ -159,7 +157,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_ADJUST] = LAYOUT_planck_grid(
     RESET,   QWERTY,  RGB_VAI, KC_BRIU, _______, _______, _______, KC_VOLD, KC_MPLY, KC_VOLU, KC_MUTE, GAME,
     _______, NEXT,    RGB_VAD, KC_BRID, KC_BTN1, KC_BTN2, KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, _______, KC_PSCR,
-    _______, RGB_TOG, RGB_MOD, AU_TOG,  CK_TOGG, _______, _______, KC_ACL0, KC_ACL1, KC_ACL2, _______, _______,
+    _______, RGB_TOG, RGB_MOD, AU_TOG,  _______, _______, _______, KC_ACL0, KC_ACL1, KC_ACL2, _______, _______,
     EEP_RST, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 ),
 
@@ -254,4 +252,44 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
   return true;
 }
+ 
+LEADER_EXTERNS();
 
+void matrix_scan_user(void) {
+    LEADER_DICTIONARY() {
+        leading = false;
+        leader_end();
+
+        SEQ_ONE_KEY(KC_T) {
+          SEND_STRING("td[]");
+          tap_code(KC_LEFT);
+        }
+
+        SEQ_TWO_KEYS(KC_G, KC_D) {
+            SEND_STRING("git diff");
+            tap_code(KC_ENT);
+        }
+
+        SEQ_TWO_KEYS(KC_G, KC_C) {
+            SEND_STRING("git commit ");
+        }
+
+        SEQ_TWO_KEYS(KC_G, KC_S) {
+            SEND_STRING("git status");
+            tap_code(KC_ENT);
+        }
+
+        SEQ_TWO_KEYS(KC_G, KC_P) {
+            SEND_STRING("git push");
+        }
+
+        SEQ_THREE_KEYS(KC_G, KC_F, KC_P) {
+            SEND_STRING("git push --force-with-lease");
+        }
+
+        // Caps-lock
+        SEQ_TWO_KEYS(KC_TAB, KC_TAB) {
+            tap_code16(KC_CAPS);
+        }
+    }
+}
