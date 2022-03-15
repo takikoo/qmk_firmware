@@ -145,9 +145,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* Adjust (Lower + Raise)
  * ,-----------------------------------------------------------------------------------.
- * | Reset|Qwerty| RGB+ | Bri+ |      |      |      | Vol- | Play | Vol+ | Mute |      |
+ * | Reset|Qwerty| RGB+ | Bri+ |      |      |      | Vol- | Play | Vol+ | Mute | GAME |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      | RGB- | Bri- | MOUS1| MOUS2| MOUSL| MOUSD| MOUSU| MOUSR|      |PrtScr|
+ * |      | NEXT | RGB- | Bri- | MOUS1| MOUS2| MOUSL| MOUSD| MOUSU| MOUSR|      |PrtScr|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      | RGB  |RGBMOD|AudTog|      |      |      | ACC0 | ACC1 | ACC2 |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
