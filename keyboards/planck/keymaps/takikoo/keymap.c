@@ -163,6 +163,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 #define C_PGUP C(KC_PGUP)
 #define C_PGDN C(KC_PGDN)
+#define COMNT C(SE_QUOT)
 
 /* MOV
  * ,-----------------------------------------------------------------------------------.
@@ -170,7 +171,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+-------------+------+------+------+------+------|
  * | Bksp | Home | End  | Shift| Ctrl |PgDown| Left | Down |  Up  | Right| Del  |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |      |      |      | COMNT|      | CAPS |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |      |      |      |      |******| Enter|      |      |      |      |
  * `-----------------------------------------------------------------------------------'
@@ -179,11 +180,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * - P outputs Shift + Insert
  * - U outputs Control + PageUp
  * - P outputs Control + PageDown
+ * - COMNT shortcut to comment code
  */
 [_MOV] = LAYOUT_planck_grid(
         XXXXXXX , XXXXXXX , C_PGUP  , KC_LALT , C_PGDN  , KC_PGUP , C(KC_INS) , C_PGUP  , XXXXXXX , C_PGDN   , S(KC_INS) , XXXXXXX,
         KC_BSPC , KC_HOME , KC_END  , KC_LSFT , KC_LCTL , KC_PGDN , KC_LEFT   , KC_DOWN , KC_UP   , KC_RIGHT , KC_DEL    , XXXXXXX,
-        _______ , XXXXXXX , XXXXXXX , KC_CAPS , XXXXXXX , XXXXXXX , XXXXXXX   , XXXXXXX , XXXXXXX , XXXXXXX  , XXXXXXX   , _______,
+        _______ , XXXXXXX , XXXXXXX , COMNT   , XXXXXXX , KC_CAPS , XXXXXXX   , XXXXXXX , XXXXXXX , XXXXXXX  , XXXXXXX   , _______,
         _______ , _______ , _______ , _______ , XXXXXXX , _______ , _______   , KC_ENT  , _______ , _______  , _______   , _______
         ),
 
