@@ -24,6 +24,7 @@ enum planck_layers {
   _GAME,
   _LOWER,
   _RAISE,
+  _GAMELOW,
   _ADJUST,
   _MOV,
   _NUM,
@@ -35,19 +36,20 @@ enum planck_keycodes {
   NEXT,
   GAME,
   TD,
+  VILL,
   BACKLIT
 };
 
 #define CTL_ESC CTL_T(KC_ESC)
 
-#define LOWER MO(_LOWER)
-#define RAISE MO(_RAISE)
+#define LOWER  MO(_LOWER)
+#define RAISE  MO(_RAISE)
 #define BS_LOW LT(_LOWER, KC_BSPC)
 #define ENT_RS LT(_RAISE, KC_ENT)
 #define SPCMOV LT(_MOV, KC_SPC)
 #define SPCNUM LT(_NUM, KC_SPC)
 #define TABEXT LT(_EXTRA, KC_TAB)
-#define ZCTRL LCTL_T(KC_Z)
+#define ZCTRL  LCTL_T(KC_Z)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -92,6 +94,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_LEAD, KC_MEH,  KC_LALT, KC_LGUI, BS_LOW,  SPCNUM,  SPCMOV,  ENT_RS,  KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
 ),
 
+#define GLOW   MO(_GAMELOW)
+#define SpLow  LM(_GAMELOW, MOD_LCTL | KC_SPC)
+
 /* GAME
  * ,-----------------------------------------------------------------------------------.
  * |   1  |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  | Bksp |
@@ -100,7 +105,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   -  |Enter |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | Alt  |   4  |   3  |   2  |Raise |    Space    |Lower | Left | Down |  Up  |Right |
+ * | Alt  |   4  |   3  |   2  |G-Low |    Space    |QWERTY| Left | Down |  Up  |Right |
  * `-----------------------------------------------------------------------------------'
  *  C-Esc - CTRL when held, ESC when tapped
  *  Lower and Raise are flipped
@@ -109,7 +114,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_1,     KC_Q,  KC_W,  KC_E,  KC_R,   KC_T,    KC_Y,    KC_U,   KC_I,     KC_O,     KC_P,     KC_BSPC,
     CTL_ESC,  KC_A,  KC_S,  KC_D,  KC_F,   KC_G,    KC_H,    KC_J,   KC_K,     KC_L,     SE_ODIA,  SE_ADIA,
     KC_LSFT,  KC_Z,  KC_X,  KC_C,  KC_V,   KC_B,    KC_N,    KC_M,   SE_COMM,  SE_DOT,   SE_MINS,  KC_ENT ,
-    KC_LALT,  KC_4,  KC_3,  KC_2,  RAISE,  KC_SPC,  KC_SPC,  LOWER,  KC_LEFT,  KC_DOWN,  KC_UP,    KC_RGHT
+    KC_LALT,  KC_4,  KC_3,  KC_2,  GLOW,   KC_SPC,  KC_SPC,   QWERTY,  KC_LEFT,  KC_DOWN,  KC_UP,    KC_RGHT
 ),
 
 /* Lower
@@ -146,6 +151,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_DEL,  SE_PIPE, SE_TILD, SE_LABK, SE_RABK, _______, _______, SE_PLUS, SE_GRV,  SE_ARNG, _______, SE_QUOT,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+),
+
+/* Lower - Game
+ * ,-----------------------------------------------------------------------------------.
+ * |      |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      | VILL |      |      |      |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |      |      |      |             |      |      |      |      |      |
+ * `-----------------------------------------------------------------------------------'
+ */
+[_GAMELOW] = LAYOUT_planck_grid(
+    XXXXXXX, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    XXXXXXX,
+    _______, VILL,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+    _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
 ),
 
 /* Adjust (Lower + Raise)
@@ -262,6 +285,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         SEND_STRING("td[]");
         tap_code(KC_LEFT);
+      }
+      return false;
+      break;
+    case VILL:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LCTL("a") SS_DELAY(100) SS_LSFT("q"));
       }
       return false;
       break;
