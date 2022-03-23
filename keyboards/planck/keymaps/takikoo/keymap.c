@@ -37,6 +37,8 @@ enum planck_keycodes {
   GAME,
   TD,
   VILL,
+  TILDE,
+  CMNT,
   BACKLIT
 };
 
@@ -222,7 +224,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |      |      |C_PGUP| CtrlK|C_PGDN|  TD  |      |   7  |   8  |   9  |   *  | Del  |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      |      |      |      |      |      | Bksp |   4  |   5  |   6  |   +  |      |
+ * |      |      |      |      | CMNT | TILDE| Bksp |   4  |   5  |   6  |   +  |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |      |      |      |      |      | Enter|   1  |   2  |   3  |   -  |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -231,7 +233,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_NUM] = LAYOUT_planck_grid(
         XXXXXXX , XXXXXXX , C_PGUP  , CtrlK   , C_PGDN  , TD      , XXXXXXX , KC_7 , KC_8    , KC_9    , KC_PAST , KC_DEL  ,
-        XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , KC_BSPC , KC_4 , KC_5    , KC_6    , KC_PPLS , XXXXXXX ,
+        XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , CMNT    , TILDE   , KC_BSPC , KC_4 , KC_5    , KC_6    , KC_PPLS , XXXXXXX ,
         _______ , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , KC_ENT  , KC_1 , KC_2    , KC_3    , KC_PMNS , XXXXXXX ,
         XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , _______ , XXXXXXX , KC_0 , KC_COMM ,KC_DOT   , XXXXXXX , XXXXXXX
         ),
@@ -291,6 +293,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case VILL:
       if (record->event.pressed) {
         SEND_STRING(SS_LCTL("a") SS_DELAY(100) SS_LSFT("q"));
+      }
+      return false;
+      break;
+    case TILDE:
+      if (record->event.pressed) {
+        SEND_STRING("~");
+        tap_code(KC_SPC);
+      }
+      return false;
+      break;
+    case CMNT:
+      if (record->event.pressed) {
+        SEND_STRING("``````");
       }
       return false;
       break;
