@@ -20,9 +20,9 @@
 enum layers {
     _QWERTY = 0,
     _GAME,
-    _COLEMAK_DH,
+    _LOWER,
+    _RAISE,
     _NAV,
-    _SYM,
     _FUNCTION,
     _NUM,
     _GAMELOW,
@@ -39,10 +39,10 @@ enum custom_keycodes {
 
 // Aliases for readability
 #define QWERTY   DF(_QWERTY)
-#define COLEMAK  DF(_COLEMAK_DH)
 #define GAME     DF(_GAME)
 
-#define SYM      MO(_SYM)
+#define BS_LOW   LT(_LOWER, KC_BSPC)
+#define ENT_RS   LT(_RAISE, KC_ENT)
 #define NAV      MO(_NAV)
 #define SPCNAV   LT(_NAV, KC_SPC)
 #define SPCNUM   LT(_NUM, KC_SPC)
@@ -75,15 +75,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
  * | LShift |   Z  |   X  |   C  |   V  |   B  | [ {  |CapsLk|  |F-keys|  ] } |   N  |   M  |   ,  |   .  |   -  |  Enter |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |Adjust| LGUI | LAlt/|NumSpc| Nav  |  | Sym  |SpcNav| Enter| RGUI | Menu |
- *                        |      |      | Enter|      |      |  |      |      |      |      |      |
+ *                        |Adjust| LGUI | Bksp/|NumSpc| Nav  |  | Sym  |SpcNav|Enter/| RGUI | Menu |
+ *                        |      |      | Lower|      |      |  |      |      | Raise|      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
     [_QWERTY] = LAYOUT(
      KC_TAB  , KC_Q ,  KC_W   ,  KC_E  ,   KC_R ,   KC_T ,                                        KC_Y,   KC_U ,   KC_I ,   KC_O  , KC_P   , KC_BSPC,
      CTL_ESC , KC_A ,  KC_S   ,  KC_D  ,   KC_F ,   KC_G ,                                        KC_H,   KC_J ,   KC_K ,   KC_L  , SE_ODIA, SE_ADIA,
      KC_LSFT , KC_Z ,  KC_X   ,  KC_C  ,   KC_V ,   KC_B , KC_LBRC,KC_CAPS,     FKEYS  , KC_RBRC, KC_N,   KC_M ,   SE_COMM, SE_DOT, SE_MINS, KC_ENT,
-                                ADJUST , KC_LGUI, ALT_ENT, SPCNUM , NAV   ,     SYM    , SPCNAV , KC_ENT, KC_RGUI, KC_APP
+                                ADJUST , KC_LGUI,  BS_LOW, SPCNUM ,KC_LALT,     KC_MEH , SPCNAV , ENT_RS, KC_RGUI, KC_APP
     ),
 
 /*
@@ -104,28 +104,49 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      KC_TAB  , KC_Q ,  KC_W   ,  KC_E  ,   KC_R ,   KC_T ,                                        KC_Y,   KC_U ,  KC_I ,   KC_O ,  KC_P , KC_BSPC,
      CTL_ESC , KC_A ,  KC_S   ,  KC_D  ,   KC_F ,   KC_G ,                                        KC_H,   KC_J ,  KC_K ,   KC_L ,SE_ODIA, SE_ADIA,
      KC_LSFT , KC_Z ,  KC_X   ,  KC_C  ,   KC_V ,   KC_B , KC_LBRC,XXXXXXX,     FKEYS  , KC_RBRC, KC_N,   KC_M ,SE_COMM, SE_DOT ,SE_MINS, KC_ENT,
-                                ADJUST , KC_LGUI, ALT_ENT, SpLow , GLow   ,     SYM    , KC_SPC ,KC_RALT, KC_RGUI, KC_APP
+                                ADJUST , KC_LGUI, ALT_ENT, SpLow , GLow   ,     _______, KC_SPC ,KC_RALT, KC_RGUI, KC_APP
     ),
 
 /*
- * Base Layer: Colemak DH
+ * Lower layer
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |  Tab   |   Q  |   W  |   F  |   P  |   B  |                              |   J  |   L  |   U  |   Y  | ;  : |  Bksp  |
+ * |   @    |   !  |   "  |   #  |   $  |   %  |                              |   &  |   /  |   (  |   )  |   =  |   \    |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |Ctrl/Esc|   A  |   R  |   S  |   T  |   G  |                              |   M  |   N  |   E  |   I  |   O  |Ctrl/' "|
+ * |   Del  |   @  |   £  |   €  |   ¤  |      |                              |      |   ?  |   [  |   ]  |   $  |  *     |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * | LShift |   Z  |   X  |   C  |   D  |   V  | [ {  |CapsLk|  |F-keys|  ] } |   K  |   H  | ,  < | . >  | /  ? | RShift |
+ * |        |      |      |      |      |      |      |      |  |      |      |      |   *  |   {  |   }  |      |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |Adjust| LGUI | LAlt/| Space| Nav  |  | Sym  | Space| AltGr| RGUI | Menu |
- *                        |      |      | Enter|      |      |  |      |      |      |      |      |
+ *                        |      |      |      |      |      |  |      |      |      |      |      |
+ *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
-    [_COLEMAK_DH] = LAYOUT(
-     KC_TAB  , KC_Q ,  KC_W   ,  KC_F  ,   KC_P ,   KC_B ,                                        KC_J,   KC_L ,  KC_U ,   KC_Y ,KC_SCLN, KC_BSPC,
-     CTL_ESC , KC_A ,  KC_R   ,  KC_S  ,   KC_T ,   KC_G ,                                        KC_M,   KC_N ,  KC_E ,   KC_I ,  KC_O , CTL_QUOT,
-     KC_LSFT , KC_Z ,  KC_X   ,  KC_C  ,   KC_D ,   KC_V , KC_LBRC,KC_CAPS,     FKEYS  , KC_RBRC, KC_K,   KC_H ,KC_COMM, KC_DOT ,KC_SLSH, KC_RSFT,
-                                 ADJUST, KC_LGUI, ALT_ENT, KC_SPC , NAV   ,     SYM    , KC_SPC ,KC_RALT, KC_RGUI, KC_APP
+    [_LOWER] = LAYOUT(
+      SE_AT  , SE_EXLM, SE_DQUO, SE_HASH, SE_DLR,  SE_PERC,                                     SE_AMPR, SE_SLSH, SE_LPRN, SE_RPRN, SE_EQL,  SE_BSLS,
+      KC_DEL , SE_AT  ,  SE_PND, SE_EURO, SE_CURR, _______,                                     _______, SE_QUES, SE_LBRC, SE_RBRC, SE_DLR , SE_ASTR,
+      _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, SE_ASTR, SE_LCBR, SE_RCBR, _______, _______,
+                                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+    ),
+
+/*
+ * Raise layer
+ *
+ * ,-------------------------------------------.                              ,-------------------------------------------.
+ * |    ^   |   1  |   2  |   3  |   4  |   5  |                              |   6  |   7  |   8  |   9  |   0  |   Del  |
+ * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
+ * |   Del  | PIPE | TILD |   <  |   >  |      |                              |      |   +  |   `  |   å  |   '  |        |        
+ * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
+ * |        |      |      |      |      |      |      |      |  |      |      |      |      |   ´  |      |      |        |
+ * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
+ *                        |      |      |      |      |      |  |      |      |      |      |      |
+ *                        |      |      |      |      |      |  |      |      |      |      |      |
+ *                        `----------------------------------'  `----------------------------------'
+ */
+    [_RAISE] = LAYOUT(
+      SE_CIRC, KC_1   ,  KC_2,   KC_3   , KC_4   , KC_5   ,                                     KC_6   , KC_7   , KC_8   , KC_9   , KC_0   , KC_DEL ,
+      KC_DEL,  SE_PIPE, SE_TILD, SE_LABK, SE_RABK, _______,                                     _______, SE_PLUS, SE_GRV , SE_ARNG, SE_QUOT, XXXXXXX,
+      _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, SE_ASTR, SE_LCBR, SE_RCBR, _______, _______,
+                                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
 /*
@@ -147,27 +168,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_BSPC, KC_HOME, KC_END , KC_LSFT, KC_LCTL, KC_PGDN,                                     KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT, KC_DEL , XXXXXXX,
       _______, XXXXXXX, XXXXXXX, COMNT  , XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PSCR,
                                  _______, XXXXXXX, XXXXXXX, _______, _______, _______, _______, _______, _______, _______
-    ),
-
-/*
- * Sym Layer: Numbers and symbols
- *
- * ,-------------------------------------------.                              ,-------------------------------------------.
- * |    `   |  1   |  2   |  3   |  4   |  5   |                              |   6  |  7   |  8   |  9   |  0   |   =    |
- * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |    ~   |  !   |  "   |  #   |  $   |  %   |                              |   &  |  /   |  (   |  )   |  =   |   *    |
- * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |    |   |   \  |  @   |  <   |  >   |  [   |  {   |      |  |      |   }  |   ]  |  _   |  [   |  ]   |  '   |   ?    |
- * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |      |      |      |      |      |  |      |      |      |      |      |
- *                        |      |      |      |      |      |  |      |      |      |      |      |
- *                        `----------------------------------'  `----------------------------------'
- */
-    [_SYM] = LAYOUT(
-     SE_GRV  , KC_1   , KC_2   , KC_3   , KC_4   , KC_5   ,                                     KC_6   , KC_7   , KC_8   , KC_9   , KC_0   , SE_EQL ,
-     SE_TILD , SE_EXLM, SE_DQUO, SE_HASH, SE_DLR , SE_PERC,                                     SE_AMPR, SE_SLSH, SE_LPRN, SE_RPRN, SE_EQL , SE_ASTR,
-     SE_PIPE , SE_BSLS, SE_AT  , SE_LABK, SE_RABK, SE_LBRC, SE_LCBR, _______, _______, SE_RCBR, SE_RBRC, SE_UNDS, SE_LBRC, SE_RBRC, SE_QUOT, SE_QUES,
-                                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
 /*
@@ -241,7 +241,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |        |      |      |GAME  |      |      |                              | TOG  | SAI  | HUI  | VAI  | MOD  |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        |      |      |Colmak|      |      |      |      |  |      |      |      | SAD  | HUD  | VAD  | RMOD |        |
+ * |        |      |      |      |      |      |      |      |  |      |      |      | SAD  | HUD  | VAD  | RMOD |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
@@ -250,7 +250,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_ADJUST] = LAYOUT(
       _______, _______, _______, QWERTY , _______, _______,                                    _______, _______, _______, _______,  _______, _______,
       _______, _______, _______, GAME   , _______, _______,                                    RGB_TOG, RGB_SAI, RGB_HUI, RGB_VAI,  RGB_MOD, _______,
-      _______, _______, _______, COLEMAK, _______, _______,_______, _______, _______, _______, _______, RGB_SAD, RGB_HUD, RGB_VAD, RGB_RMOD, _______,
+      _______, _______, _______, _______, _______, _______,_______, _______, _______, _______, _______, RGB_SAD, RGB_HUD, RGB_VAD, RGB_RMOD, _______,
                                  _______, _______, _______,_______, _______, _______, _______, _______, _______, _______
     ),
 
@@ -340,14 +340,14 @@ bool oled_task_user(void) {
             case _GAME:
                 oled_write_P(PSTR("GAME\n"), false);
                 break;
-            case _COLEMAK_DH:
-                oled_write_P(PSTR("Colemak-DH\n"), false);
+            case _LOWER:
+                oled_write_P(PSTR("Lower\n"), false);
+                break;
+            case _RAISE:
+                oled_write_P(PSTR("Raise\n"), false);
                 break;
             case _NAV:
                 oled_write_P(PSTR("Nav\n"), false);
-                break;
-            case _SYM:
-                oled_write_P(PSTR("Sym\n"), false);
                 break;
             case _FUNCTION:
                 oled_write_P(PSTR("Function\n"), false);
