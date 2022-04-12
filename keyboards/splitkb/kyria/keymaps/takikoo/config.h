@@ -30,3 +30,12 @@
 #define ENCODER_RESOLUTION 2
 
 #define LAYER_STATE_16BIT
+
+// The Leader key allows to flexibly assign macros to key sequences.
+#define LEADER_PER_KEY_TIMING
+#define LEADER_TIMEOUT 350
+
+#define TAPPING_TERM 200
+
+// Allows media codes to properly register in macros and rotary encoder code
+#define TAP_CODE_DELAY 10

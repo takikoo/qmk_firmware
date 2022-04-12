@@ -17,6 +17,8 @@
 #include "keymap_swedish.h"
 #include "sendstring_swedish.h"
 
+uint16_t copy_paste_timer;
+
 enum layers {
     _QWERTY = 0,
     _GAME,
@@ -74,7 +76,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |Ctrl/Esc|   A  |   S  |   D  |   F  |   G  |                              |   H  |   J  |   K  |   L  |   Ö  |   Ä    |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * | LShift |   Z  |   X  |   C  |   V  |   B  | [ {  |CapsLk|  |F-keys|  ] } |   N  |   M  |   ,  |   .  |   -  |  Enter |
+ * | LShift |   Z  |   X  |   C  |   V  |   B  | [ {  | CCCV |  |F-keys|  ] } |   N  |   M  |   ,  |   .  |   -  |  Enter |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |Adjust| LAlt | Bksp/|NumSpc| LGUI |  | MEH  |SpcNav|Enter/| RGUI | Menu |
  *                        |      |      | Lower|      |      |  |      |      | Raise|      |      |
@@ -83,7 +85,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY] = LAYOUT(
      KC_TAB  , KC_Q ,  KC_W   ,  KC_E  ,   KC_R ,   KC_T ,                                        KC_Y,   KC_U ,   KC_I ,   KC_O  , KC_P   , KC_BSPC,
      CTL_ESC , KC_A ,  KC_S   ,  KC_D  ,   KC_F ,   KC_G ,                                        KC_H,   KC_J ,   KC_K ,   KC_L  , SE_ODIA, SE_ADIA,
-     KC_LSFT , KC_Z ,  KC_X   ,  KC_C  ,   KC_V ,   KC_B , KC_LBRC,KC_CAPS,     FKEYS  , KC_RBRC, KC_N,   KC_M ,   SE_COMM, SE_DOT, SE_MINS, KC_ENT,
+     KC_LSFT , KC_Z ,  KC_X   ,  KC_C  ,   KC_V ,   KC_B , KC_LBRC,KC_CCCV,     FKEYS  , KC_LEAD, KC_N,   KC_M ,   SE_COMM, SE_DOT, SE_MINS, KC_ENT,
                                 ADJUST , KC_LALT,  BS_LOW, TABNUM ,KC_LGUI,     KC_MEH , SPCNAV , ENT_RS, KC_RGUI, KC_APP
     ),
 
@@ -156,9 +158,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-------------------------------------------.                              ,-------------------------------------------.
  * |        |      |      |      | Alt  | PgUp |                              | Yank |C_PGUP|      |C_PGDN| Paste|        |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |        | Home | End  | Shift| Ctrl | PgDn |                              |  ←   |   ↓  |   ↑  |   →  | Del  |        |
+ * |  Bksp  | Home | End  | Shift| Ctrl | PgDn |                              |  ←   |   ↓  |   ↑  |   →  | Del  |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        |      |      |      | COMNT|DUPLIC|      |      |  |      |      |      |      |      |      |      | PrtSc  |
+ * |        | Ctrl |      |      | COMNT|DUPLIC|      |      |  |      |      |      |      |      |      |      | PrtSc  |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
@@ -167,7 +169,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_NAV] = LAYOUT(
       XXXXXXX, XXXXXXX, XXXXXXX, KC_LALT, XXXXXXX, KC_PGUP,                                     YANK   , C_PGUP,  XXXXXXX, C_PGDN , PASTE  , XXXXXXX,
       KC_BSPC, KC_HOME, KC_END , KC_LSFT, KC_LCTL, KC_PGDN,                                     KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT, KC_DEL , XXXXXXX,
-      _______, XXXXXXX, XXXXXXX, COMNT  , DUPLIC , XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PSCR,
+      _______, KC_LCTL, XXXXXXX, COMNT  , DUPLIC , XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PSCR,
                                  _______, XXXXXXX, XXXXXXX, _______, _______, _______, _______, _______, _______, _______
     ),
 
@@ -306,8 +308,44 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
+    case KC_CCCV:  // One key copy/paste
+      if (record->event.pressed) {
+        copy_paste_timer = timer_read();
+      } else {
+        if (timer_elapsed(copy_paste_timer) > TAPPING_TERM) {  // Hold, copy
+          tap_code16(LCTL(KC_C));
+        } else { // Tap, paste
+          tap_code16(LCTL(KC_V));
+        }
+      }
+      break;
   }
   return true;
+}
+
+bool is_alt_tab_active = false;
+uint16_t alt_tab_timer = 0;
+
+LEADER_EXTERNS();
+void matrix_scan_user(void) {
+    if (is_alt_tab_active) {
+        if (timer_elapsed(alt_tab_timer) > 1000) {
+            unregister_code(KC_LALT);
+            is_alt_tab_active = false;
+        }
+    }
+
+    LEADER_DICTIONARY() {
+        leading = false;
+        leader_end();
+
+        SEQ_ONE_KEY(KC_C) { // Inline Code
+            SEND_STRING("`` " SS_TAP(X_LEFT) SS_TAP(X_LEFT));
+        }
+        SEQ_ONE_KEY(KC_S) { // Windows screenshot
+            SEND_STRING(SS_LGUI("\nS"));
+        }
+    }
 }
 
 /* The default OLED and rotary encoder code can be found at the bottom of qmk_firmware/keyboards/splitkb/kyria/rev1/rev1.c
@@ -449,46 +487,72 @@ bool oled_task_user(void) {
 #ifdef ENCODER_ENABLE
 bool encoder_update_user(uint8_t index, bool clockwise) {
 
-    if (index == 0) {
-        switch (biton32(layer_state)) {
-            case _NAV:
-                // History scrubbing. For Adobe products, hold shift while moving
-                // backward to go forward instead.
-                if (clockwise) {
-                    tap_code16(C(KC_Z));
-                } else {
-                    tap_code16(C(KC_Y));
-                }
-                break;
-            default:
-                // Volume control
-                if (clockwise) {
-                    tap_code(KC_VOLU);
-                } else {
-                    tap_code(KC_VOLD);
-                }
-                break;
+  if (index == 0) {
+    switch (biton32(layer_state)) {
+      case _RAISE:
+				// Scroll search result
+				if (clockwise) {
+					tap_code(KC_F3);
+				} else {
+					tap_code16(S(KC_F3));
+				}
+        break;
+      case _NAV:
+        // Scroll left/right
+        if (clockwise) {
+          tap_code(KC_RIGHT);
+        } else {
+          tap_code(KC_LEFT);
         }
-    } else if (index == 1) {
-        switch (biton32(layer_state)) {
-            case _NAV:
-                // Scroll left/right
-                if (clockwise) {
-                    tap_code(KC_RIGHT);
-                } else {
-                    tap_code(KC_LEFT);
-                }
-                break;
-            default:
-                // Page up/Page down
-                if (clockwise) {
-                    tap_code(KC_PGDN);
-                } else {
-                    tap_code(KC_PGUP);
-                }
-                break;
+        break;
+      default:
+        // Switch between windows on Windows with alt tab.
+        if (clockwise) {
+          if (!is_alt_tab_active) {
+            is_alt_tab_active = true;
+            register_code(KC_LALT);
+          }
+          alt_tab_timer = timer_read();
+          tap_code16(KC_TAB);
+        } else {
+					if (!is_alt_tab_active) {
+						is_alt_tab_active = true;
+						register_code(KC_LALT);
+					}
+					alt_tab_timer = timer_read();
+          tap_code16(S(KC_TAB));
         }
+        break;
     }
-    return false;
+  } else if (index == 1) {
+    switch (biton32(layer_state)) {
+			case _LOWER:
+				// Change volume
+				if (clockwise) {
+					tap_code(KC_KB_VOLUME_UP);
+				} else {
+					tap_code(KC_KB_VOLUME_DOWN);
+				}
+				break;
+      case _NUM:
+        // History scrubbing. For Adobe products, hold shift while moving
+        // backward to go forward instead.
+        if (clockwise) {
+          tap_code16(C(KC_Z));
+        } else {
+          tap_code16(C(KC_Y));
+        }
+        break;
+      default:
+        // Page up/Page down
+        if (clockwise) {
+          tap_code(KC_PGDN);
+        } else {
+          tap_code(KC_PGUP);
+        }
+        break;
+    }
+  }
+  return false;
 }
 #endif
