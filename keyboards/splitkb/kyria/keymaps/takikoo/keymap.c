@@ -86,7 +86,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      KC_TAB  , KC_Q ,  KC_W   ,  KC_E  ,   KC_R ,   KC_T ,                                        KC_Y,   KC_U ,   KC_I ,   KC_O  , KC_P   , KC_BSPC,
      CTL_ESC , KC_A ,  KC_S   ,  KC_D  ,   KC_F ,   KC_G ,                                        KC_H,   KC_J ,   KC_K ,   KC_L  , SE_ODIA, SE_ADIA,
      KC_LSFT , KC_Z ,  KC_X   ,  KC_C  ,   KC_V ,   KC_B , KC_LBRC,KC_CCCV,     FKEYS  , KC_LEAD, KC_N,   KC_M ,   SE_COMM, SE_DOT, SE_MINS, KC_ENT,
-                                ADJUST , KC_LALT,  BS_LOW, TABNUM ,KC_LGUI,     KC_MEH , SPCNAV , ENT_RS, KC_RGUI, KC_APP
+                                ADJUST , KC_LALT,  BS_LOW, TABNUM ,KC_LGUI,     KC_MEH , SPCNAV , ENT_RS, KC_RGUI, KC_MUTE
     ),
 
 /*
@@ -107,7 +107,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      KC_TAB  , KC_Q ,  KC_W   ,  KC_E  ,   KC_R ,   KC_T ,                                        KC_Y,   KC_U ,  KC_I ,   KC_O ,  KC_P , KC_BSPC,
      CTL_ESC , KC_A ,  KC_S   ,  KC_D  ,   KC_F ,   KC_G ,                                        KC_H,   KC_J ,  KC_K ,   KC_L ,SE_ODIA, SE_ADIA,
      KC_LSFT , KC_Z ,  KC_X   ,  KC_C  ,   KC_V ,   KC_B , KC_LBRC,XXXXXXX,     FKEYS  , KC_RBRC, KC_N,   KC_M ,SE_COMM, SE_DOT ,SE_MINS, KC_ENT,
-                                ADJUST , KC_LGUI, ALT_ENT, SpLow , GLow   ,     _______, KC_SPC ,KC_RALT, KC_RGUI, KC_APP
+                                ADJUST , KC_LGUI, ALT_ENT, SpLow , GLow   ,     _______, KC_SPC ,KC_RALT, KC_RGUI, KC_MUTE
     ),
 
 /*
@@ -128,7 +128,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       SE_AT  , SE_EXLM, SE_DQUO, SE_HASH, SE_DLR,  SE_PERC,                                     SE_AMPR, SE_SLSH, SE_LPRN, SE_RPRN, SE_EQL,  SE_BSLS,
       KC_DEL , SE_AT  ,  SE_PND, SE_EURO, SE_CURR, _______,                                     _______, SE_QUES, SE_LBRC, SE_RBRC, SE_DLR , SE_ASTR,
       _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, SE_ASTR, SE_LCBR, SE_RCBR, _______, _______,
-                                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+                                 _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MUTE
     ),
 
 /*
@@ -149,7 +149,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       SE_CIRC, KC_1   ,  KC_2,   KC_3   , KC_4   , KC_5   ,                                     KC_6   , KC_7   , KC_8   , KC_9   , KC_0   , KC_DEL ,
       KC_DEL,  SE_PIPE, SE_TILD, SE_LABK, SE_RABK, _______,                                     SE_QUOT, SE_PLUS, SE_GRV , SE_ARNG, _______, XXXXXXX,
       _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, SE_ASTR, SE_LCBR, SE_RCBR, _______, _______,
-                                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+                                 KC_MPLY, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
 /*
@@ -329,7 +329,7 @@ uint16_t alt_tab_timer = 0;
 LEADER_EXTERNS();
 void matrix_scan_user(void) {
     if (is_alt_tab_active) {
-        if (timer_elapsed(alt_tab_timer) > 500) {
+        if (timer_elapsed(alt_tab_timer) > 1000) {
             unregister_code(KC_LALT);
             is_alt_tab_active = false;
         }
@@ -339,6 +339,9 @@ void matrix_scan_user(void) {
         leading = false;
         leader_end();
 
+        SEQ_ONE_KEY(KC_Q) { // Contains XPATH
+            SEND_STRING("contains(@class,'')"  SS_TAP(X_LEFT) SS_TAP(X_LEFT));
+        }
         SEQ_ONE_KEY(KC_C) { // Inline Code
             SEND_STRING("`` " SS_TAP(X_LEFT) SS_TAP(X_LEFT));
         }
