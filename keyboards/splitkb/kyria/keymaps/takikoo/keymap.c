@@ -329,7 +329,7 @@ uint16_t alt_tab_timer = 0;
 LEADER_EXTERNS();
 void matrix_scan_user(void) {
     if (is_alt_tab_active) {
-        if (timer_elapsed(alt_tab_timer) > 1000) {
+        if (timer_elapsed(alt_tab_timer) > 500) {
             unregister_code(KC_LALT);
             is_alt_tab_active = false;
         }
