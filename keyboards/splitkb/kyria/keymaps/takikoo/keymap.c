@@ -22,6 +22,7 @@ uint16_t copy_paste_timer;
 enum layers {
     _QWERTY = 0,
     _GAME,
+    _COLEMAK_DH,
     _LOWER,
     _RAISE,
     _NAV,
@@ -41,6 +42,7 @@ enum custom_keycodes {
 
 // Aliases for readability
 #define QWERTY   DF(_QWERTY)
+#define COLEMAK  DF(_COLEMAK_DH)
 #define GAME     DF(_GAME)
 
 #define BS_LOW   LT(_LOWER, KC_BSPC)
@@ -86,6 +88,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      KC_TAB  , KC_Q ,  KC_W   ,  KC_E  ,   KC_R ,   KC_T ,                                        KC_Y,   KC_U ,   KC_I ,   KC_O  , KC_P   , KC_BSPC,
      CTL_ESC , KC_A ,  KC_S   ,  KC_D  ,   KC_F ,   KC_G ,                                        KC_H,   KC_J ,   KC_K ,   KC_L  , SE_ODIA, SE_ADIA,
      KC_LSFT , KC_Z ,  KC_X   ,  KC_C  ,   KC_V ,   KC_B , GAME   ,KC_CCCV,     FKEYS  , KC_LEAD, KC_N,   KC_M ,   SE_COMM, SE_DOT, SE_MINS, KC_ENT,
+                                ADJUST , KC_LALT,  BS_LOW, TABNUM ,KC_LGUI,     KC_MEH , SPCNAV , ENT_RS, KC_RGUI, KC_MUTE
+    ),
+
+/*
+ * Base Layer: Colemak DH
+ *
+ * ,-------------------------------------------.                              ,-------------------------------------------.
+ * |  Tab   |   Q  |   W  |   F  |   P  |   B  |                              |   J  |   L  |   U  |   Y  | ;  : |  Bksp  |
+ * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
+ * |Ctrl/Esc|   A  |   R  |   S  |   T  |   G  |                              |   M  |   N  |   E  |   I  |   O  |Ctrl/' "|
+ * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
+ * | LShift |   Z  |   X  |   C  |   D  |   V  |QWERTY|      |  |F-keys| LEAD |   K  |   H  | ,  < | . >  | /  ? | RShift |
+ * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
+ *                        |Adjust| LGUI | LAlt/| Space| Nav  |  | Sym  | Space| AltGr| RGUI | Menu |
+ *                        |      |      | Enter|      |      |  |      |      |      |      |      |
+ *                        `----------------------------------'  `----------------------------------'
+ */
+    [_COLEMAK_DH] = LAYOUT(
+     KC_TAB  , KC_Q ,  KC_W   ,  KC_F  ,   KC_P ,   KC_B ,                                        KC_J,   KC_L ,  KC_U ,   KC_Y ,SE_ODIA, KC_BSPC,
+     CTL_ESC , KC_A ,  KC_R   ,  KC_S  ,   KC_T ,   KC_G ,                                        KC_M,   KC_N ,  KC_E ,   KC_I ,  KC_O , CTL_QUOT,
+     KC_LSFT , KC_Z ,  KC_X   ,  KC_C  ,   KC_D ,   KC_V , QWERTY ,XXXXXXX,     FKEYS  , KC_LEAD,  KC_K,   KC_H ,SE_COMM, SE_DOT ,SE_SLSH, KC_RSFT,
                                 ADJUST , KC_LALT,  BS_LOW, TABNUM ,KC_LGUI,     KC_MEH , SPCNAV , ENT_RS, KC_RGUI, KC_MUTE
     ),
 
@@ -139,7 +162,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |   Del  | PIPE | TILD |   <  |   >  |   ã  |                              |   '  |   +  |   `  |   å  |      |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        |      |      |      |      |      |      |      |  |      |      |      |      |   ´  |      |      |        |
+ * |        |      |      |      |      |      | COLE |      |  |      |      |      |      |   ´  |      |      |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
@@ -148,7 +171,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_RAISE] = LAYOUT(
       SE_CIRC, KC_1   ,  KC_2,   KC_3   , KC_4   , KC_5   ,                                     KC_6   , KC_7   , KC_8   , KC_9   , KC_0   , KC_DEL ,
       KC_DEL,  SE_PIPE, SE_TILD, SE_LABK, SE_RABK, _______,                                     SE_QUOT, SE_PLUS, SE_GRV , SE_ARNG, _______, XXXXXXX,
-      _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, SE_ASTR, SE_LCBR, SE_RCBR, _______, _______,
+      _______, _______, _______, _______, _______, _______, COLEMAK, _______, _______, _______, _______, SE_ASTR, SE_LCBR, SE_RCBR, _______, _______,
                                  KC_MPLY, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
@@ -378,6 +401,9 @@ bool oled_task_user(void) {
         switch (get_highest_layer(layer_state|default_layer_state)) {
             case _QWERTY:
                 oled_write_P(PSTR("QWERTY\n"), false);
+                break;
+            case _COLEMAK_DH:
+                oled_write_P(PSTR("Colemak-DH\n"), false);
                 break;
             case _GAME:
                 oled_write_P(PSTR("GAME\n"), false);
