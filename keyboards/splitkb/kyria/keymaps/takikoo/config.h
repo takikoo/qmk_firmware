@@ -17,11 +17,21 @@
 #pragma once
 
 #ifdef RGBLIGHT_ENABLE
-#    define RGBLIGHT_ANIMATIONS
 #    define RGBLIGHT_HUE_STEP  8
 #    define RGBLIGHT_SAT_STEP  8
 #    define RGBLIGHT_VAL_STEP  8
 #    define RGBLIGHT_LIMIT_VAL 150
+#    undef RGBLIGHT_ANIMATIONS
+#    undef RGBLIGHT_EFFECT_BREATHING
+#    undef RGBLIGHT_EFFECT_RAINBOW_MOOD
+#    undef RGBLIGHT_EFFECT_RAINBOW_SWIRL
+#    undef RGBLIGHT_EFFECT_SNAKE
+#    undef RGBLIGHT_EFFECT_KNIGHT
+#    undef RGBLIGHT_EFFECT_CHRISTMAS
+#    undef RGBLIGHT_EFFECT_STATIC_GRADIENT
+#    undef RGBLIGHT_EFFECT_RGB_TEST
+#    undef RGBLIGHT_EFFECT_ALTERNATING
+#    undef RGBLIGHT_EFFECT_TWINKLE
 #endif
 
 #define ENCODER_RESOLUTION 2
@@ -36,3 +46,5 @@
 
 // Allows media codes to properly register in macros and rotary encoder code
 #define TAP_CODE_DELAY 10
+
+#define COMBO_COUNT 5
