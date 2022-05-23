@@ -49,9 +49,8 @@ enum planck_keycodes {
 #define BS_LOW LT(_LOWER, KC_BSPC)
 #define ENT_RS LT(_RAISE, KC_ENT)
 #define SPCMOV LT(_MOV, KC_SPC)
-#define SPCNUM LT(_NUM, KC_SPC)
-#define TABEXT LT(_EXTRA, KC_TAB)
 #define TABNUM LT(_NUM, KC_TAB)
+#define TABEXT LT(_EXTRA, KC_TAB)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -63,7 +62,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   -  |Enter |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | Hyper| Meh  | Alt  | GUI  |Lower |SpcNum|SpcMov|Raise |DM1Ply|DM2Ply|DM1Rec|DM2Rec|
+ * | Hyper| Meh  | Alt  | GUI  |Lower |TabNum|SpcMov|Raise |DM1Ply|DM2Ply|DM1Rec|DM2Rec|
  * `-----------------------------------------------------------------------------------'
  *  C-Esc - CTRL when held, ESC when tapped
  *  SpaceMove - Space when tapped, MOVE layer when held
@@ -72,7 +71,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     TABEXT,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
     CTL_ESC, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    SE_ODIA, SE_ADIA,
     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    SE_COMM, SE_DOT,  SE_MINS, KC_ENT ,
-    KC_HYPR, KC_MEH,  KC_LALT, KC_LGUI, BS_LOW,  SPCNUM,  SPCMOV,  ENT_RS,  DM_PLY1, DM_PLY2, DM_REC1, DM_REC2
+    KC_HYPR, KC_MEH,  KC_LALT, KC_LGUI, BS_LOW,  TABNUM,  SPCMOV,  ENT_RS,  DM_PLY1, DM_PLY2, DM_REC1, DM_REC2
 ),
 
 /* Next (Trying new layouts)
@@ -141,17 +140,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |   ^  |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  | Del  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | Del  | PIPE | TILD |   <  |   >  |      |      |   +  |   `  |   å  |   '  |      |
+ * | Del  | PIPE | TILD |   <  |   >  |      |      |   +  |   '  |   å  |   `  |   ´  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |   ´  |      |      |      |
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |      |      |      |             |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_RAISE] = LAYOUT_planck_grid(
     SE_CIRC, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_DEL ,
-    KC_DEL,  SE_PIPE, SE_TILD, SE_LABK, SE_RABK, _______, _______, SE_PLUS, SE_GRV,  SE_ARNG, SE_QUOT, XXXXXXX,
-    _______, _______, _______, _______, _______, _______, _______, _______, SE_ACUT, _______, _______, _______,
+    KC_DEL,  SE_PIPE, SE_TILD, SE_LABK, SE_RABK, _______, _______, SE_PLUS, SE_QUOT, SE_ARNG, SE_GRV , SE_ACUT,
+    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 ),
 
@@ -194,6 +193,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #define C_PGUP C(KC_PGUP)
 #define C_PGDN C(KC_PGDN)
 #define COMNT C(SE_QUOT)
+#define DUPLI C(S(SE_D))
 
 /* MOV
  * ,-----------------------------------------------------------------------------------.
@@ -201,7 +201,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+-------------+------+------+------+------+------|
  * | Bksp | Home | End  | Shift| Ctrl |PgDown| Left | Down |  Up  | Right| Del  |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      |      | COMNT|      | CAPS |      |      |      |      |      |      |
+ * |      |      |      | COMNT| DUPLI| CAPS |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |      |      |      |      |******| Enter|      |      |      |      |
  * `-----------------------------------------------------------------------------------'
@@ -211,11 +211,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * - U outputs Control + PageUp
  * - P outputs Control + PageDown
  * - COMNT shortcut to comment code
+ * - DUPLI shortcut to duplicate line
  */
 [_MOV] = LAYOUT_planck_grid(
         XXXXXXX , XXXXXXX , XXXXXXX , KC_LALT , XXXXXXX , KC_PGUP , C(KC_INS) , C_PGUP  , XXXXXXX , C_PGDN   , S(KC_INS) , XXXXXXX,
         KC_BSPC , KC_HOME , KC_END  , KC_LSFT , KC_LCTL , KC_PGDN , KC_LEFT   , KC_DOWN , KC_UP   , KC_RIGHT , KC_DEL    , XXXXXXX,
-        _______ , XXXXXXX , XXXXXXX , COMNT   , XXXXXXX , KC_CAPS , XXXXXXX   , XXXXXXX , XXXXXXX , XXXXXXX  , XXXXXXX   , _______,
+        _______ , XXXXXXX , XXXXXXX , COMNT   , DUPLI   , KC_CAPS , XXXXXXX   , XXXXXXX , XXXXXXX , XXXXXXX  , XXXXXXX   , _______,
         _______ , _______ , _______ , _______ , XXXXXXX , XXXXXXX , _______   , KC_ENT  , _______ , _______  , _______   , _______
         ),
 
