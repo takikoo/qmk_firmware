@@ -61,8 +61,8 @@ const uint16_t PROGMEM qw_combo[] = {KC_Q, KC_W, COMBO_END};
 combo_t key_combos[COMBO_COUNT] = {
   [AB_ESC] = COMBO(ab_combo, KC_ESC),
   [JK_BRC] = COMBO(jk_combo, MK_BRC),
-  [IO_PRN] = COMBO(jk_combo, MK_PRN),
-  [UI_CBR] = COMBO(jk_combo, MK_CBR),
+  [IO_PRN] = COMBO(io_combo, MK_PRN),
+  [UI_CBR] = COMBO(ui_combo, MK_CBR),
   [QW_SFT] = COMBO(qw_combo, KC_LSFT)
 };
 
@@ -329,6 +329,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         SEND_STRING("()");
         tap_code(KC_LEFT);
       }
+      return false;
+      break;
     case MK_BRC:
       if (record->event.pressed) {
         SEND_STRING("[]");
@@ -386,13 +388,13 @@ void matrix_scan_user(void) {
         leading = false;
         leader_end();
 
-        SEQ_ONE_KEY(KC_Q) { // Contains XPATH
+        SEQ_ONE_KEY(KC_A) { // Contains XPATH
             SEND_STRING("contains(@class,'')"  SS_TAP(X_LEFT) SS_TAP(X_LEFT));
         }
         SEQ_ONE_KEY(KC_C) { // Inline Code
             SEND_STRING("`` " SS_TAP(X_LEFT) SS_TAP(X_LEFT));
         }
-        SEQ_ONE_KEY(KC_S) { // Windows screenshot
+        SEQ_ONE_KEY(KC_Q) { // Windows screenshot
             SEND_STRING(SS_LGUI("\nS"));
         }
     }
