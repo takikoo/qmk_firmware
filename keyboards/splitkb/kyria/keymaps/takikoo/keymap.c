@@ -40,6 +40,7 @@ enum custom_keycodes {
     TILDE,
     CMNT,
     MK_BRC,
+    MK_SQT,
     MK_CBR,
     MK_PRN,
 };
@@ -47,6 +48,7 @@ enum custom_keycodes {
 enum combos {
   AB_ESC,
   JK_BRC,
+  KL_SQT,
   IO_PRN,
   UI_CBR,
   QW_SFT,
@@ -54,6 +56,7 @@ enum combos {
 
 const uint16_t PROGMEM ab_combo[] = {KC_A, KC_B, COMBO_END};
 const uint16_t PROGMEM jk_combo[] = {KC_J, KC_K, COMBO_END};
+const uint16_t PROGMEM kl_combo[] = {KC_K, KC_L, COMBO_END};
 const uint16_t PROGMEM io_combo[] = {KC_I, KC_O, COMBO_END};
 const uint16_t PROGMEM ui_combo[] = {KC_U, KC_I, COMBO_END};
 const uint16_t PROGMEM qw_combo[] = {KC_Q, KC_W, COMBO_END};
@@ -61,6 +64,7 @@ const uint16_t PROGMEM qw_combo[] = {KC_Q, KC_W, COMBO_END};
 combo_t key_combos[COMBO_COUNT] = {
   [AB_ESC] = COMBO(ab_combo, KC_ESC),
   [JK_BRC] = COMBO(jk_combo, MK_BRC),
+  [KL_SQT] = COMBO(kl_combo, MK_SQT),
   [IO_PRN] = COMBO(io_combo, MK_PRN),
   [UI_CBR] = COMBO(ui_combo, MK_CBR),
   [QW_SFT] = COMBO(qw_combo, KC_LSFT)
@@ -338,6 +342,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
+    case MK_SQT:
+      if (record->event.pressed) {
+        SEND_STRING("''");
+        tap_code(KC_LEFT);
+      }
+      return false;
+      break;
     case MK_CBR:
       if (record->event.pressed) {
         SEND_STRING("{}");
@@ -388,7 +399,7 @@ void matrix_scan_user(void) {
         leading = false;
         leader_end();
 
-        SEQ_ONE_KEY(KC_A) { // Contains XPATH
+        SEQ_ONE_KEY(KC_F) { // Contains XPATH
             SEND_STRING("contains(@class,'')"  SS_TAP(X_LEFT) SS_TAP(X_LEFT));
         }
         SEQ_ONE_KEY(KC_C) { // Inline Code
