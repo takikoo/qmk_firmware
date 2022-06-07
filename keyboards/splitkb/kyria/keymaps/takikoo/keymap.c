@@ -43,10 +43,12 @@ enum custom_keycodes {
     MK_SQT,
     MK_CBR,
     MK_PRN,
+    MK_COL,
 };
 
 enum combos {
   AB_ESC,
+  DTC_COL,
   JK_BRC,
   KL_SQT,
   IO_PRN,
@@ -55,6 +57,7 @@ enum combos {
 };
 
 const uint16_t PROGMEM ab_combo[] = {KC_A, KC_B, COMBO_END};
+const uint16_t PROGMEM dtc_combo[] = {SE_DOT, SE_COMM, COMBO_END};
 const uint16_t PROGMEM jk_combo[] = {KC_J, KC_K, COMBO_END};
 const uint16_t PROGMEM kl_combo[] = {KC_K, KC_L, COMBO_END};
 const uint16_t PROGMEM io_combo[] = {KC_I, KC_O, COMBO_END};
@@ -62,12 +65,13 @@ const uint16_t PROGMEM ui_combo[] = {KC_U, KC_I, COMBO_END};
 const uint16_t PROGMEM qw_combo[] = {KC_Q, KC_W, COMBO_END};
 
 combo_t key_combos[COMBO_COUNT] = {
-  [AB_ESC] = COMBO(ab_combo, KC_ESC),
-  [JK_BRC] = COMBO(jk_combo, MK_BRC),
-  [KL_SQT] = COMBO(kl_combo, MK_SQT),
-  [IO_PRN] = COMBO(io_combo, MK_PRN),
-  [UI_CBR] = COMBO(ui_combo, MK_CBR),
-  [QW_SFT] = COMBO(qw_combo, KC_LSFT)
+  [AB_ESC]  = COMBO(ab_combo, KC_ESC),
+  [DTC_COL] = COMBO(dtc_combo, SE_COLN),
+  [JK_BRC]  = COMBO(jk_combo, MK_BRC),
+  [KL_SQT]  = COMBO(kl_combo, MK_SQT),
+  [IO_PRN]  = COMBO(io_combo, MK_PRN),
+  [UI_CBR]  = COMBO(ui_combo, MK_CBR),
+  [QW_SFT]  = COMBO(qw_combo, KC_LSFT)
 };
 
 // Aliases for readability
