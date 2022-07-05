@@ -44,6 +44,8 @@ enum custom_keycodes {
     MK_CBR,
     MK_PRN,
     MK_COL,
+    UC_TAB,
+    UC_STAB,
 };
 
 enum combos {
@@ -317,6 +319,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
+bool is_alt_tab_active = false;
+uint16_t alt_tab_timer = 0;
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case TD:
@@ -383,12 +388,29 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
       }
       break;
+    case UC_TAB:
+      if (record->event.pressed) {
+        if (!is_alt_tab_active) {
+          is_alt_tab_active = true;
+          register_code(KC_LALT);
+        }
+        alt_tab_timer = timer_read();
+        tap_code16(KC_TAB);
+      }
+      break;
+    case UC_STAB:
+      if (record->event.pressed) {
+        if (!is_alt_tab_active) {
+          is_alt_tab_active = true;
+          register_code(KC_LALT);
+        }
+        alt_tab_timer = timer_read();
+        tap_code16(S(KC_TAB));
+      }
+      break;
   }
   return true;
 }
-
-bool is_alt_tab_active = false;
-uint16_t alt_tab_timer = 0;
 
 LEADER_EXTERNS();
 void matrix_scan_user(void) {
@@ -491,75 +513,4 @@ bool oled_task_user(void) {
 }
 #endif
 
-#ifdef ENCODER_ENABLE
-bool encoder_update_user(uint8_t index, bool clockwise) {
-
-  if (index == 0) {
-    switch (biton32(layer_state)) {
-      case _RAISE:
-				// Scroll search result
-				if (clockwise) {
-					tap_code(KC_F3);
-				} else {
-					tap_code16(S(KC_F3));
-				}
-        break;
-      case _NAV:
-        // Scroll left/right
-        if (clockwise) {
-          tap_code(KC_RIGHT);
-        } else {
-          tap_code(KC_LEFT);
-        }
-        break;
-      default:
-        // Switch between windows on Windows with alt tab.
-        if (clockwise) {
-          if (!is_alt_tab_active) {
-            is_alt_tab_active = true;
-            register_code(KC_LALT);
-          }
-          alt_tab_timer = timer_read();
-          tap_code16(KC_TAB);
-        } else {
-					if (!is_alt_tab_active) {
-						is_alt_tab_active = true;
-						register_code(KC_LALT);
-					}
-					alt_tab_timer = timer_read();
-          tap_code16(S(KC_TAB));
-        }
-        break;
-    }
-  } else if (index == 1) {
-    switch (biton32(layer_state)) {
-			case _LOWER:
-				// Change volume
-				if (clockwise) {
-					tap_code(KC_KB_VOLUME_UP);
-				} else {
-					tap_code(KC_KB_VOLUME_DOWN);
-				}
-				break;
-      case _NUM:
-        // History scrubbing. For Adobe products, hold shift while moving
-        // backward to go forward instead.
-        if (clockwise) {
-          tap_code16(C(KC_Z));
-        } else {
-          tap_code16(C(KC_Y));
-        }
-        break;
-      default:
-        // Page up/Page down
-        if (clockwise) {
-          tap_code(KC_PGDN);
-        } else {
-          tap_code(KC_PGUP);
-        }
-        break;
-    }
-  }
-  return false;
-}
-#endif
+#include "encoder_map.c"
