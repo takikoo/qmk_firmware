@@ -37,6 +37,7 @@ enum custom_keycodes {
     KC_CCCV = SAFE_RANGE,
     TD,
     VILL,
+    VILL5,
     TILDE,
     CMNT,
     MK_BRC,
@@ -89,7 +90,7 @@ combo_t key_combos[COMBO_COUNT] = {
 #define FKEYS    MO(_FUNCTION)
 #define ADJUST   MO(_ADJUST)
 #define GLow     MO(_GAMELOW)
-#define SpLow    LM(_GAMELOW, MOD_LCTL | KC_SPC)
+#define SpLow    LM(_GAMELOW, MOD_LCTL)
 
 #define CTL_ESC  MT(MOD_LCTL, KC_ESC)
 #define CTL_QUOT MT(MOD_RCTL, KC_QUOTE)
@@ -320,7 +321,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // clang-format on
 
 bool is_alt_tab_active = false;
-uint16_t alt_tab_timer = 0;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
@@ -332,6 +332,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
       break;
     case VILL:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LCTL("a") SS_DELAY(100) "q");
+      }
+      return false;
+      break;
+    case VILL5:
       if (record->event.pressed) {
         SEND_STRING(SS_LCTL("a") SS_DELAY(100) SS_LSFT("q"));
       }
@@ -394,7 +400,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           is_alt_tab_active = true;
           register_code(KC_LALT);
         }
-        alt_tab_timer = timer_read();
         tap_code16(KC_TAB);
       }
       break;
@@ -404,7 +409,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           is_alt_tab_active = true;
           register_code(KC_LALT);
         }
-        alt_tab_timer = timer_read();
         tap_code16(S(KC_TAB));
       }
       break;
@@ -415,7 +419,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 LEADER_EXTERNS();
 void matrix_scan_user(void) {
     if (is_alt_tab_active) {
-        if (timer_elapsed(alt_tab_timer) > 500) {
+        if (!IS_LAYER_ON(_NUM)) {
             unregister_code(KC_LALT);
             is_alt_tab_active = false;
         }
