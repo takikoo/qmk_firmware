@@ -89,9 +89,8 @@ combo_t key_combos[COMBO_COUNT] = {
 #define TABNUM   LT(_NUM, KC_TAB)
 #define FKEYS    MO(_FUNCTION)
 #define ADJUST   MO(_ADJUST)
-#define GLow     MO(_GAMELOW)
-#define SpLow    LM(_GAMELOW, MOD_LCTL)
-
+#define GLow     LM(_GAMELOW, MOD_LCTL)
+#define SpLow    LT(_GAMELOW, KC_SPC)
 #define CTL_ESC  MT(MOD_LCTL, KC_ESC)
 #define CTL_QUOT MT(MOD_RCTL, KC_QUOTE)
 #define ALT_ENT  MT(MOD_LALT, KC_ENT)
@@ -281,7 +280,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-------------------------------------------.                              ,-------------------------------------------.
  * |        |   1  |   2  |   3  |   4  |   5  |                              |   6  |   7  |   8  |   9  |   0  |        |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |        | VILL |      |      |      |  DEL |                              |      |      |      |      |      |        |
+ * |        | VILL5|      |      |      |  DEL |                              |      |      |      |      |      |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
  * |        |      |      |      |      |      |      |      |  |      |      |      |      |      |      |      |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
@@ -291,7 +290,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
     [_GAMELOW] = LAYOUT(
       XXXXXXX, KC_1   , KC_2   , KC_3   , KC_4   , KC_5   ,                                     KC_6   , KC_7   , KC_8   , KC_9   , KC_0   , XXXXXXX,
-      _______, VILL   , XXXXXXX, XXXXXXX, KC_DEL , XXXXXXX,                                     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      _______, VILL5  , XXXXXXX, XXXXXXX, KC_DEL , XXXXXXX,                                     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
       _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
                                  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
     ),
