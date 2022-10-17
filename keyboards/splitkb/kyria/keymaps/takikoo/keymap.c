@@ -54,8 +54,8 @@ enum combos {
   DTC_COL,
   JK_BRC,
   KL_SQT,
-  CM_PRN,
-  UI_CBR,
+  CM_CBR,
+  UI_PRN,
   QW_SFT,
 };
 
@@ -72,8 +72,8 @@ combo_t key_combos[COMBO_COUNT] = {
   [DTC_COL] = COMBO(dtc_combo, SE_COLN),
   [JK_BRC]  = COMBO(jk_combo, MK_BRC),
   [KL_SQT]  = COMBO(kl_combo, MK_SQT),
-  [CM_PRN]  = COMBO(cm_combo, MK_PRN),
-  [UI_CBR]  = COMBO(ui_combo, MK_CBR),
+  [CM_CBR]  = COMBO(cm_combo, MK_CBR),
+  [UI_PRN]  = COMBO(ui_combo, MK_PRN),
   [QW_SFT]  = COMBO(qw_combo, KC_LSFT)
 };
 
