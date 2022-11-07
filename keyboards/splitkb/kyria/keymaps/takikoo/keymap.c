@@ -45,8 +45,6 @@ enum custom_keycodes {
     MK_CBR,
     MK_PRN,
     MK_COL,
-    UC_TAB,
-    UC_STAB,
 };
 
 enum combos {
@@ -279,7 +277,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
     [_NUM] = LAYOUT(
       _______, _______, C_PGUP , _______, C_PGDN , TD     ,                                      CtrlK , KC_7   , KC_8   , KC_9   , KC_PAST, KC_DEL ,
-      _______, _______, UC_STAB, _______, UC_TAB , TILDE  ,                                     KC_BSPC, KC_4   , KC_5   , KC_6   , KC_PPLS, SE_COMM,
+      _______, _______, XXXXXXX, _______, XXXXXXX, TILDE  ,                                     KC_BSPC, KC_4   , KC_5   , KC_6   , KC_PPLS, SE_COMM,
       _______, _______, _______, _______, CMNT   , _______, _______, _______, _______, SCtrlK , _______, KC_1   , KC_2   , KC_3   , KC_PMNS, _______,
                                  _______, _______, _______, _______, _______, _______, _______, KC_0   , SE_DOT , _______
     ),
@@ -328,8 +326,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 // clang-format on
-
-bool is_alt_tab_active = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
@@ -403,36 +399,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
       }
       break;
-    case UC_TAB:
-      if (record->event.pressed) {
-        if (!is_alt_tab_active) {
-          is_alt_tab_active = true;
-          register_code(KC_LALT);
-        }
-        tap_code16(KC_TAB);
-      }
-      break;
-    case UC_STAB:
-      if (record->event.pressed) {
-        if (!is_alt_tab_active) {
-          is_alt_tab_active = true;
-          register_code(KC_LALT);
-        }
-        tap_code16(S(KC_TAB));
-      }
-      break;
   }
   return true;
 }
 
 LEADER_EXTERNS();
 void matrix_scan_user(void) {
-    if (is_alt_tab_active) {
-        if (!IS_LAYER_ON(_NUM)) {
-            unregister_code(KC_LALT);
-            is_alt_tab_active = false;
-        }
-    }
 
     LEADER_DICTIONARY() {
         leading = false;
