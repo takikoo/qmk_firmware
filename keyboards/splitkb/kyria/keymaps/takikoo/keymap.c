@@ -95,6 +95,16 @@ combo_t key_combos[COMBO_COUNT] = {
 #define CTL_QUOT MT(MOD_RCTL, KC_QUOTE)
 #define ALT_ENT  MT(MOD_LALT, KC_ENT)
 
+// Mod Tap Home row
+#define HM_A     LGUI_T(KC_A)
+#define HM_S     LALT_T(KC_S)
+#define HM_D     LCTL_T(KC_D)
+#define HM_F     LSFT_T(KC_F)
+#define HM_J     LSFT_T(KC_J)
+#define HM_K     LCTL_T(KC_K)
+#define HM_L     LALT_T(KC_L)
+#define HM_ODIA  LGUI_T(SE_ODIA)
+
 #define C_PGUP C(KC_PGUP)
 #define C_PGDN C(KC_PGDN)
 #define YANK   C(KC_INS)
@@ -122,7 +132,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
     [_QWERTY] = LAYOUT(
      KC_TAB  , KC_Q ,  KC_W   ,  KC_E  ,   KC_R ,   KC_T ,                                        KC_Y,   KC_U ,   KC_I ,   KC_O  , KC_P   , KC_BSPC,
-     CTL_ESC , KC_A ,  KC_S   ,  KC_D  ,   KC_F ,   KC_G ,                                        KC_H,   KC_J ,   KC_K ,   KC_L  , SE_ODIA, SE_ADIA,
+     CTL_ESC , HM_A ,  HM_S   ,  HM_D  ,   HM_F ,   KC_G ,                                        KC_H,   HM_J ,   HM_K ,   HM_L  , HM_ODIA, SE_ADIA,
      KC_LSFT , KC_Z ,  KC_X   ,  KC_C  ,   KC_V ,   KC_B , GAME   ,KC_CCCV,     FKEYS  , KC_LEAD, KC_N,   KC_M ,   SE_COMM, SE_DOT, SE_MINS, KC_ENT,
                                 ADJUST , KC_LALT,  BS_LOW, TABNUM ,KC_LGUI,     KC_MEH , SPCNAV , ENT_RS, KC_RGUI, KC_MUTE
     ),
