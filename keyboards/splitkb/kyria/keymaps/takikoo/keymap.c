@@ -38,6 +38,9 @@ enum custom_keycodes {
     TD,
     VILL,
     VILL5,
+    GLHF,
+    GG,
+    OC,
     TILDE,
     CMNT,
     MK_BRC,
@@ -164,17 +167,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |Ctrl/Esc|   A  |   S  |   D  |   F  |   G  |                              |   H  |   J  |   K  |   L  |   Ö  |   Ä    |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * | LShift |   Z  |   X  |   C  |   V  |   B  |QWERTY|      |  |F-keys|      |   N  |   M  |   ,  |   .  |   -  |  Enter |
+ * | LShift |   Z  |   X  |   C  |   V  |   B  |   1  |   2  |  |F-keys|      |   N  |   M  |   ,  |   .  |   -  |  Enter |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |Adjust| LGUI | LAlt/| SpLow| GLow |  | Sym  | Space| AltGr| RGUI | Menu |
+ *                        |  DEL | LGUI | LAlt/| SpLow| GLow |  | Sym  | Space| AltGr| RGUI | Menu |
  *                        |      |      | Enter|      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
     [_GAME] = LAYOUT(
      KC_TAB  , KC_Q ,  KC_W   ,  KC_E  ,   KC_R ,   KC_T ,                                        KC_Y,   KC_U ,  KC_I ,   KC_O ,  KC_P , KC_BSPC,
      CTL_ESC , KC_A ,  KC_S   ,  KC_D  ,   KC_F ,   KC_G ,                                        KC_H,   KC_J ,  KC_K ,   KC_L ,SE_ODIA, SE_ADIA,
-     KC_LSFT , KC_Z ,  KC_X   ,  KC_C  ,   KC_V ,   KC_B , QWERTY,XXXXXXX,     FKEYS  , XXXXXXX, KC_N,   KC_M ,SE_COMM, SE_DOT ,SE_MINS, KC_ENT,
-                                ADJUST , KC_LGUI, ALT_ENT, SpLow ,GLow   ,     _______, KC_SPC ,KC_RALT, KC_RGUI, KC_MUTE
+     KC_LSFT , KC_Z ,  KC_X   ,  KC_C  ,   KC_V ,   KC_B , KC_1, KC_2,         QWERTY , XXXXXXX,  KC_N,   KC_M ,SE_COMM, SE_DOT ,SE_MINS, KC_ENT,
+                                 KC_DEL, KC_LGUI, ALT_ENT, SpLow ,GLow   ,     _______, KC_SPC ,KC_RALT, KC_RGUI, KC_MUTE
     ),
 
 /*
@@ -298,8 +301,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
     [_GAMELOW] = LAYOUT(
       XXXXXXX, KC_1   , KC_2   , KC_3   , KC_4   , KC_5   ,                                     KC_6   , KC_7   , KC_8   , KC_9   , KC_0   , XXXXXXX,
-      _______, VILL5  , XXXXXXX, XXXXXXX, KC_DEL , XXXXXXX,                                     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-      _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      _______, VILL5  , KC_3   , KC_2   , KC_1   , XXXXXXX,                                     OC     , GLHF   , GG     ,  XXXXXXX, XXXXXXX, XXXXXXX,
+      _______, VILL   , XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
                                  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
     ),
 
@@ -333,6 +336,29 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         SEND_STRING("td[]");
         tap_code(KC_LEFT);
+      }
+      return false;
+      break;
+    case GLHF:
+      if (record->event.pressed) {
+        tap_code(KC_ENT);
+        SEND_STRING(SS_DELAY(100) "*glhf!" SS_DELAY(100));
+        tap_code(KC_ENT);
+      }
+      return false;
+      break;
+    case GG:
+      if (record->event.pressed) {
+        tap_code(KC_ENT);
+        SEND_STRING(SS_DELAY(100) "*gg wp" SS_DELAY(100));
+        tap_code(KC_ENT);
+      }
+      return false;
+      break;
+    case OC:
+      if (record->event.pressed) {
+        tap_code(KC_ENT);
+        SEND_STRING(SS_DELAY(100) "*");
       }
       return false;
       break;
