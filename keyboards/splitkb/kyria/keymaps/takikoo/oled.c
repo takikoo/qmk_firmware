@@ -44,6 +44,9 @@ bool oled_task_user(void) {
             case _GAMELOW:
                 oled_write_P(PSTR("Game - Low\n"), false);
                 break;
+            case _MOUSE:
+                oled_write_P(PSTR("Mouse\n"), false);
+                break;
             case _ADJUST:
                 oled_write_P(PSTR("Adjust\n"), false);
                 break;

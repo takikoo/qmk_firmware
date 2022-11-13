@@ -30,6 +30,7 @@ enum layers {
     _FUNCTION,
     _NUM,
     _GAMELOW,
+    _MOUSE,
     _ADJUST,
 };
 
@@ -90,6 +91,7 @@ combo_t key_combos[COMBO_COUNT] = {
 #define TABNUM   LT(_NUM, KC_TAB)
 #define FKEYS    MO(_FUNCTION)
 #define ADJUST   MO(_ADJUST)
+#define MOUSE    MO(_MOUSE)
 #define GLow     LM(_GAMELOW, MOD_LCTL)
 #define SpLow    LT(_GAMELOW, KC_SPC)
 #define CTL_ESC  MT(MOD_LCTL, KC_ESC)
@@ -106,8 +108,12 @@ combo_t key_combos[COMBO_COUNT] = {
 #define HM_L     LALT_T(KC_L)
 #define HM_ODIA  LGUI_T(SE_ODIA)
 
+#define U_RDO KC_AGIN
+#define U_UND KC_UNDO
+
 #define C_PGUP C(KC_PGUP)
 #define C_PGDN C(KC_PGDN)
+#define CUT    C(KC_X)
 #define YANK   C(KC_INS)
 #define PASTE  S(KC_INS)
 #define COMNT  C(SE_QUOT)
@@ -134,8 +140,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY] = LAYOUT(
      KC_TAB  , KC_Q ,  KC_W   ,  KC_E  ,   KC_R ,   KC_T ,                                        KC_Y,   KC_U ,   KC_I ,   KC_O  , KC_P   , KC_BSPC,
      CTL_ESC , HM_A ,  HM_S   ,  HM_D  ,   HM_F ,   KC_G ,                                        KC_H,   HM_J ,   HM_K ,   HM_L  , HM_ODIA, SE_ADIA,
-     KC_LSFT , KC_Z ,  KC_X   ,  KC_C  ,   KC_V ,   KC_B , GAME   ,KC_CCCV,     FKEYS  , KC_LEAD, KC_N,   KC_M ,   SE_COMM, SE_DOT, SE_MINS, KC_ENT,
-                                ADJUST , KC_LALT,  BS_LOW, TABNUM ,KC_LGUI,     KC_MEH , SPCNAV , ENT_RS, KC_RGUI, KC_MUTE
+     KC_LSFT , KC_Z ,  KC_X   ,  KC_C  ,   KC_V ,   KC_B , GAME   , KC_CCCV,    FKEYS  , KC_LEAD, KC_N,   KC_M ,   SE_COMM, SE_DOT, SE_MINS, KC_ENT,
+                                 ADJUST, KC_LALT,  BS_LOW, TABNUM , MOUSE,      KC_MEH , SPCNAV , ENT_RS, KC_RGUI, KC_MUTE
     ),
 
 /*
@@ -226,7 +232,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * Nav Layer: Media, navigation
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |        |      |      | Alt  |      | PgUp |                              | Yank |C_PGUP|      |C_PGDN| Paste|        |
+ * |        |      | LGUI | Alt  |      | PgUp |                              | Yank |C_PGUP|      |C_PGDN| Paste|        |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |  Bksp  | Home | End  | Shift| Ctrl | PgDn |                              |  ←   |   ↓  |   ↑  |   →  | Del  |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
@@ -237,7 +243,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        `----------------------------------'  `----------------------------------'
  */
     [_NAV] = LAYOUT(
-      XXXXXXX, XXXXXXX, XXXXXXX, KC_LALT, XXXXXXX, KC_PGUP,                                     YANK   , C_PGUP,  XXXXXXX, C_PGDN , PASTE  , XXXXXXX,
+      XXXXXXX, XXXXXXX, KC_LGUI, KC_LALT, XXXXXXX, KC_PGUP,                                     YANK   , C_PGUP,  XXXXXXX, C_PGDN , PASTE  , XXXXXXX,
       KC_BSPC, KC_HOME, KC_END , KC_LSFT, KC_LCTL, KC_PGDN,                                     KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT, KC_DEL , XXXXXXX,
       _______, KC_LCTL, XXXXXXX, COMNT  , DUPLIC , XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, YANK,    PASTE  , XXXXXXX, XXXXXXX, KC_PSCR,
                                  _______, XXXXXXX, XXXXXXX, _______, _______, _______, _______, _______, _______, _______
@@ -306,6 +312,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
     ),
 
+/*
+ * Mouse layer
+ *
+ * ,-------------------------------------------.                              ,-------------------------------------------.
+ * |        |      |      |      |      |      |                              | REDO | PASTE| YANK | CUT  | UNDO |        |
+ * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
+ * |        | LGUI | LAlt | LCtrl|LShift|      |                              |  M←  |  M↓  |  M↑  |  M→  |      |        |
+ * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
+ * |        |      |      |      |      |      |      |      |  |      |      |  MS← |  MS↓ |  MS↑ |  MS→ |      |        |
+ * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
+ *                        |      |      |      |      |      |  |RClick|LClick|WClick|      |      |
+ *                        |      |      |      |      |      |  |      |      |      |      |      |
+ *                        `----------------------------------'  `----------------------------------'
+ */
+    [_MOUSE] = LAYOUT(
+ 
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                                     U_RDO,   PASTE,   YANK,    CUT,     U_UND,   XXXXXXX,
+      XXXXXXX, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, XXXXXXX,                                     KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, XXXXXXX, XXXXXXX, 
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_WH_L, KC_WH_D, KC_WH_U, KC_WH_R, XXXXXXX, XXXXXXX, 
+                                 XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_BTN2, KC_BTN1, KC_BTN3, XXXXXXX, XXXXXXX
+    ),
 /*
  * Adjust Layer: Default layer settings, RGB
  *
