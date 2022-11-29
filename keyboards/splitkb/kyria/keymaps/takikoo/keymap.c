@@ -35,8 +35,7 @@ enum layers {
 };
 
 enum custom_keycodes {
-    KC_CCCV = SAFE_RANGE,
-    TD,
+    TD = SAFE_RANGE,
     VILL,
     VILL5,
     GLHF,
@@ -91,7 +90,7 @@ combo_t key_combos[COMBO_COUNT] = {
 #define TABNUM   LT(_NUM, KC_TAB)
 #define FKEYS    MO(_FUNCTION)
 #define ADJUST   MO(_ADJUST)
-#define MOUSE    MO(_MOUSE)
+#define MOUSE    LT(_MOUSE, KC_ESC)
 #define GLow     LM(_GAMELOW, MOD_LCTL)
 #define SpLow    LT(_GAMELOW, KC_SPC)
 #define CTL_ESC  MT(MOD_LCTL, KC_ESC)
@@ -131,7 +130,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |Ctrl/Esc|   A  |   S  |   D  |   F  |   G  |                              |   H  |   J  |   K  |   L  |   Ö  |   Ä    |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * | LShift |   Z  |   X  |   C  |   V  |   B  | GAME | CCCV |  |F-keys| LEAD |   N  |   M  |   ,  |   .  |   -  |  Enter |
+ * | LShift |   Z  |   X  |   C  |   V  |   B  | GAME |CapsW |  |F-keys| LEAD |   N  |   M  |   ,  |   .  |   -  |  Enter |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |Adjust| LAlt | Bksp/|NumSpc| LGUI |  | MEH  |SpcNav|Enter/| RGUI | Menu |
  *                        |      |      | Lower|      |      |  |      |      | Raise|      |      |
@@ -140,7 +139,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY] = LAYOUT(
      KC_TAB  , KC_Q ,  KC_W   ,  KC_E  ,   KC_R ,   KC_T ,                                        KC_Y,   KC_U ,   KC_I ,   KC_O  , KC_P   , KC_BSPC,
      CTL_ESC , HM_A ,  HM_S   ,  HM_D  ,   HM_F ,   KC_G ,                                        KC_H,   HM_J ,   HM_K ,   HM_L  , HM_ODIA, SE_ADIA,
-     KC_LSFT , KC_Z ,  KC_X   ,  KC_C  ,   KC_V ,   KC_B , GAME   , KC_CCCV,    FKEYS  , KC_LEAD, KC_N,   KC_M ,   SE_COMM, SE_DOT, SE_MINS, KC_ENT,
+     KC_LSFT , KC_Z ,  KC_X   ,  KC_C  ,   KC_V ,   KC_B , GAME   , CW_TOGG,    FKEYS  , KC_LEAD, KC_N,   KC_M ,   SE_COMM, SE_DOT, SE_MINS, KC_ENT,
                                  ADJUST, KC_LALT,  BS_LOW, TABNUM , MOUSE,      KC_MEH , SPCNAV , ENT_RS, KC_RGUI, KC_MUTE
     ),
 
@@ -234,9 +233,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-------------------------------------------.                              ,-------------------------------------------.
  * |        |      | LGUI | Alt  |      | PgUp |                              | Yank |C_PGUP|      |C_PGDN| Paste|        |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |  Bksp  | Home | End  | Shift| Ctrl | PgDn |                              |  ←   |   ↓  |   ↑  |   →  | Del  |        |
+ * |  Bksp  | Home | End  | Ctrl | Shift| PgDn |                              |  ←   |   ↓  |   ↑  |   →  | Del  |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        | Ctrl |      |      | COMNT|DUPLIC|      |      |  |      |      |      | Yank |      | Paste|      | PrtSc  |
+ * |        |      |      | COMNT|DUPLIC|      |      |      |  |      |      |      | Yank |      | Paste|      | PrtSc  |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
@@ -244,8 +243,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
     [_NAV] = LAYOUT(
       XXXXXXX, XXXXXXX, KC_LGUI, KC_LALT, XXXXXXX, KC_PGUP,                                     YANK   , C_PGUP,  XXXXXXX, C_PGDN , PASTE  , XXXXXXX,
-      KC_BSPC, KC_HOME, KC_END , KC_LSFT, KC_LCTL, KC_PGDN,                                     KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT, KC_DEL , XXXXXXX,
-      _______, KC_LCTL, XXXXXXX, COMNT  , DUPLIC , XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, YANK,    PASTE  , XXXXXXX, XXXXXXX, KC_PSCR,
+      KC_BSPC, KC_HOME, KC_END , KC_LCTL, KC_LSFT, KC_PGDN,                                     KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT, KC_DEL , XXXXXXX,
+      _______, XXXXXXX, XXXXXXX, COMNT  , DUPLIC , XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, YANK,    PASTE  , XXXXXXX, XXXXXXX, KC_PSCR,
                                  _______, XXXXXXX, XXXXXXX, _______, _______, _______, _______, _______, _______, _______
     ),
 
@@ -440,17 +439,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         SEND_STRING("```");
       }
       return false;
-      break;
-    case KC_CCCV:  // One key copy/paste
-      if (record->event.pressed) {
-        copy_paste_timer = timer_read();
-      } else {
-        if (timer_elapsed(copy_paste_timer) > TAPPING_TERM) {  // Hold, copy
-          tap_code16(LCTL(KC_C));
-        } else { // Tap, paste
-          tap_code16(LCTL(KC_V));
-        }
-      }
       break;
   }
   return true;
