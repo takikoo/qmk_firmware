@@ -186,7 +186,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_ADJUST] = LAYOUT_planck_grid(
     GAME,    QWERTY,  RGB_VAI, KC_BRIU, _______, _______, _______, KC_VOLD, KC_MPLY, KC_VOLU, KC_MUTE, _______,
     _______, NEXT,    RGB_VAD, KC_BRID, KC_BTN1, KC_BTN2, KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, _______, KC_PSCR,
-    _______, RGB_TOG, RGB_MOD, AU_TOG,  _______, _______, _______, KC_ACL0, KC_ACL1, KC_ACL2, _______, _______,
+    _______, RGB_TOG, RGB_MOD, AU_TOGG, _______, _______, _______, KC_ACL0, KC_ACL1, KC_ACL2, _______, _______,
     EE_CLR, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, RESET
 ),
 
@@ -330,44 +330,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
   return true;
 }
- 
-LEADER_EXTERNS();
 
-void matrix_scan_user(void) {
-    LEADER_DICTIONARY() {
-        leading = false;
-        leader_end();
-
-        SEQ_ONE_KEY(KC_T) {
-          SEND_STRING("td[]");
-          tap_code(KC_LEFT);
-        }
-
-        SEQ_TWO_KEYS(KC_G, KC_D) {
-            SEND_STRING("git diff");
-            tap_code(KC_ENT);
-        }
-
-        SEQ_TWO_KEYS(KC_G, KC_C) {
-            SEND_STRING("git commit ");
-        }
-
-        SEQ_TWO_KEYS(KC_G, KC_S) {
-            SEND_STRING("git status");
-            tap_code(KC_ENT);
-        }
-
-        SEQ_TWO_KEYS(KC_G, KC_P) {
-            SEND_STRING("git push");
-        }
-
-        SEQ_THREE_KEYS(KC_G, KC_F, KC_P) {
-            SEND_STRING("git push --force-with-lease");
-        }
-
+void leader_end_user(void) {
+    if(leader_sequence_one_key(KC_T)) {
+        SEND_STRING("td[]");
+        tap_code(KC_LEFT);
+    } else if (leader_sequence_two_keys(KC_G, KC_D)) {
+        SEND_STRING("git diff");
+        tap_code(KC_ENT);
+    } else if (leader_sequence_two_keys(KC_G, KC_C)) {
+        SEND_STRING("git commit ");
+    } else if (leader_sequence_two_keys(KC_G, KC_S)) {
+        SEND_STRING("git status");
+        tap_code(KC_ENT);
+    } else if (leader_sequence_two_keys(KC_G, KC_P)) {
+        SEND_STRING("git push");
+    } else if (leader_sequence_three_keys(KC_G, KC_F, KC_P)) {
+        SEND_STRING("git push --force-with-lease");
+    } else if (leader_sequence_two_keys(KC_TAB, KC_TAB)) {
         // Caps-lock
-        SEQ_TWO_KEYS(KC_TAB, KC_TAB) {
-            tap_code16(KC_CAPS);
-        }
+        tap_code16(KC_CAPS);
     }
 }
