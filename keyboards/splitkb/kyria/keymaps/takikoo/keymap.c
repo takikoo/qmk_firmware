@@ -119,6 +119,8 @@ combo_t key_combos[COMBO_COUNT] = {
 #define DUPLIC C(S(KC_D))
 #define CtrlK  C(KC_K)
 #define SCtrlK S(C(KC_K))
+#define B_BACK A(KC_LEFT)
+#define B_FWD  A(KC_RIGHT)
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -242,7 +244,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        `----------------------------------'  `----------------------------------'
  */
     [_NAV] = LAYOUT(
-      XXXXXXX, XXXXXXX, KC_LGUI, KC_LALT, XXXXXXX, KC_PGUP,                                     YANK   , C_PGUP,  XXXXXXX, C_PGDN , PASTE  , XXXXXXX,
+      XXXXXXX, XXXXXXX, KC_LGUI, KC_LALT, XXXXXXX, KC_PGUP,                                     YANK   , C_PGUP,  B_FWD  , C_PGDN , PASTE  , XXXXXXX,
       KC_BSPC, KC_HOME, KC_END , KC_LCTL, KC_LSFT, KC_PGDN,                                     KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT, KC_DEL , XXXXXXX,
       _______, XXXXXXX, XXXXXXX, COMNT  , DUPLIC , XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, YANK,    PASTE  , XXXXXXX, XXXXXXX, KC_PSCR,
                                  _______, XXXXXXX, XXXXXXX, _______, _______, _______, _______, _______, _______, _______
@@ -284,7 +286,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        `----------------------------------'  `----------------------------------'
  */
     [_NUM] = LAYOUT(
-      _______, _______, C_PGUP , _______, C_PGDN , TD     ,                                      CtrlK , KC_7   , KC_8   , KC_9   , KC_PAST, KC_DEL ,
+      _______, _______, C_PGUP , B_BACK , C_PGDN , TD     ,                                     CtrlK  , KC_7   , KC_8   , KC_9   , KC_PAST, KC_DEL ,
       _______, _______, XXXXXXX, _______, XXXXXXX, TILDE  ,                                     KC_BSPC, KC_4   , KC_5   , KC_6   , KC_PPLS, SE_COMM,
       _______, _______, _______, _______, CMNT   , _______, _______, _______, _______, SCtrlK , _______, KC_1   , KC_2   , KC_3   , KC_PMNS, _______,
                                  _______, _______, _______, _______, _______, _______, _______, KC_0   , SE_DOT , _______
