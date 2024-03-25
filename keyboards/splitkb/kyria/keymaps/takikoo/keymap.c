@@ -116,6 +116,7 @@ combo_t key_combos[COMBO_COUNT] = {
 #define YANK   C(KC_INS)
 #define PASTE  S(KC_INS)
 #define COMNT  C(SE_QUOT)
+#define DLINE  C(KC_D)
 #define DUPLIC C(S(KC_D))
 #define CtrlK  C(KC_K)
 #define SCtrlK S(C(KC_K))
@@ -246,7 +247,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_NAV] = LAYOUT(
       XXXXXXX, XXXXXXX, KC_LGUI, KC_LALT, XXXXXXX, KC_PGUP,                                     YANK   , C_PGUP,  B_FWD  , C_PGDN , PASTE  , XXXXXXX,
       KC_BSPC, KC_HOME, KC_END , KC_LCTL, KC_LSFT, KC_PGDN,                                     KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT, KC_DEL , XXXXXXX,
-      _______, XXXXXXX, XXXXXXX, COMNT  , DUPLIC , XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, YANK,    PASTE  , XXXXXXX, XXXXXXX, KC_PSCR,
+      _______, XXXXXXX, DLINE  , COMNT  , DUPLIC , XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, YANK,    PASTE  , XXXXXXX, XXXXXXX, KC_PSCR,
                                  _______, XXXXXXX, XXXXXXX, _______, _______, _______, _______, _______, _______, _______
     ),
 
